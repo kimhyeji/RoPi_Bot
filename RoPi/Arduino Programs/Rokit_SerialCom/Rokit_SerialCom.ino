@@ -16,6 +16,15 @@ void setup()
   SmartInventor.DCMotorUse();  // DC Motor Use
 
   Serial.begin(115200);       // initialize serial communication at 9600 bits per second:
+  
+//Set up the digital inputs for the bottom IR sensors
+  pinMode(11,INPUT);
+  pinMode(12,INPUT);
+  pinMode(13,INPUT);
+  pinMode(14,INPUT);
+  pinMode(16,INPUT);
+  pinMode(17,INPUT);
+  pinMode(18,INPUT);
 
   myservo1.attach(27);        // attaches the servo 1 on pin 27 to the servo object 
   myservo2.attach(28);        // attaches the servo 2 on pin 28 to the servo object 
@@ -40,6 +49,22 @@ void loop()
  
   switch(readbyte)
   {   
+  case 76: //character "L"
+  
+  Serial.print(digitalRead(11));
+  Serial.print(" ");
+  Serial.print(digitalRead(12));
+  Serial.print(" ");
+  Serial.print(digitalRead(13));
+  Serial.print(" ");
+  Serial.print(digitalRead(14));
+  Serial.print(" ");
+  Serial.print(digitalRead(16));
+  Serial.print(" ");
+  Serial.print(digitalRead(17));
+  Serial.print(" ");
+  Serial.print(digitalRead(18));
+  Serial.print(" ");
   //------------------------------------------------------------------------  
   case 77:// character "M" 
   SmartInventor.DCMove(forward,speed);                        
