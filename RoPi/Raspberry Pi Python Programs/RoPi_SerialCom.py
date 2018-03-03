@@ -8,8 +8,8 @@ ser = serial.Serial('/dev/ttyUSB0',115200)
 def requestBottomIRSensors():
     ser.write("L")
     read_serial = ser.readline()
-    a,b,c,d,e,f,g,h = read_serial.split(" ")
-    return int(a),int(b),int(c),int(d),int(e),int(f),int(g)
+    d11,d12,d13,d14,d16,d17,d18 = read_serial.split(" ")
+    return int(d11),int(d12),int(d13),int(d14),int(d16),int(d17),int(d18)
 
 def moveForwards():
     ser.write('M')
@@ -50,8 +50,13 @@ def servoStepIncrease():
 def servoStepDecrease():
     ser.write('Y')
 
+#returns a tuple with the data as integers
 def requestData():
-    ser.write("Z")#REQUEST INFO OVER AND OVER
+    ser.write("Z")#REQUEST INFO
     read_serial = ser.readline()
-    a,b,c,d,e,f,g,h = read_serial.split(" ")
-    return int(a),int(b),int(c),int(d),int(e),int(f),int(g)    
+    #read the Serial line the rokit should be sending a message
+
+    #chop up that message
+    servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21 = read_serial.split(" ")
+    #now return the data as integers
+    return int(servo1Angle),int(servo2Angle),int(servoStep),int(speed),int(a19),int(a20),int(a21)    

@@ -65,6 +65,7 @@ void loop()
   Serial.print(" ");
   Serial.print(digitalRead(18));
   Serial.print(" ");
+    Serial.println(" ");
   //------------------------------------------------------------------------  
   case 77:// character "M" 
   SmartInventor.DCMove(forward,speed);                        
