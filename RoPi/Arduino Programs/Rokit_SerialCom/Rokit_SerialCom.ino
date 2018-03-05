@@ -46,7 +46,7 @@ void loop()
   readbyte = Serial.read();
   //if there is something sent via the serial monitor save the byte
  }
- 
+ //readbyte will be an ASCII character or letter
   switch(readbyte)
   {   
   case 76: //character "L"
