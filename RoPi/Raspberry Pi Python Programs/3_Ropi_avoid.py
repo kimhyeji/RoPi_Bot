@@ -3,7 +3,7 @@ import time
 startTime = time.time()
 
 #this program will run the robot for 6 seconds
-while((time.time()-startTime) < 6):
+while((time.time()-startTime) < 15):
 
     servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21 = ropi.requestData()
     #print(servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21)
@@ -18,7 +18,7 @@ while((time.time()-startTime) < 6):
         print("left")
     elif a20 < 100:
         print("Backwards")
-        ropi.moveBackwards
+        ropi.moveBackwards()
         time.sleep(1)
         ropi.moveLeft()
 

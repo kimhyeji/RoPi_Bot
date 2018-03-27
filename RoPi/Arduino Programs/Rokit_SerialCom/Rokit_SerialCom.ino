@@ -1,7 +1,7 @@
 #include <SmartInventor.h>
 #include <Servo.h> 
 
-int speed = 50;               //motor speed
+int speed = 30;               //motor speed
 
 Servo myservo1;      // create servo object to control a servo1
 Servo myservo2;      // create servo object to control a servo2
