@@ -60,3 +60,41 @@ def requestData():
     servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21 = read_serial.split(" ")
     #now return the data as integers
     return int(servo1Angle),int(servo2Angle),int(servoStep),int(speed),int(a19),int(a20),int(a21)    
+
+#Sets the motor speed to a value of 0-100
+def setSpeed(i):
+    if i < 0:
+        i = 0
+    if i > 100:
+        i = 100
+    j = i%10
+    setModifier((i-j)/10)
+    ser.write('l')
+    setModifier(j)
+    ser.write('m')
+
+#Plays a sound at frequency i and tempo j
+#i is any value from 100-10000 in multiples of 100
+#j is any value from 0-10
+def buzz(i,j):
+    if i < 100:
+        i = 100
+    if i > 10000:
+        i = 10000
+    if j < 0:
+        j = 0
+    if j > 10:
+        j = 10
+    k = i%1000
+    setModifier((i-k)/1000)
+    ser.write('n')
+    i=k
+    k = i%100
+    setModifier((i-k)/100)
+    ser.write('o')
+    setModifier(j)
+    ser.write('p')
+
+def setModifier(i):
+    ser.write(chr(i+97))
+

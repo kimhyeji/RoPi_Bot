@@ -1,9 +1,10 @@
 import RoPi_SerialCom as ropi
 import time
+
 startTime = time.time()
 
 #this program will run the robot for 6 seconds
-while((time.time()-startTime) < 15):
+while((time.time()-startTime) < 20):
 
     servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21 = ropi.requestData()
     #print(servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21)

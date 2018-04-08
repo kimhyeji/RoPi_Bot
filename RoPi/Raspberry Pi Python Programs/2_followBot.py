@@ -8,18 +8,18 @@ startTime = time.time()
 while((time.time()-startTime) < 15):
 
     servo1Angle,servo2Angle,servoStep,speed,a19,a20,a21 = ropi.requestData()
-    d11,d12,d13,d14,d16,d17,d18 = ropi.requestBottomIRSensors()
+    #d11,d12,d13,d14,d16,d17,d18 = ropi.requestBottomIRSensors()
     
 
-    if a19 < 100:
+    if a19 < 200:
         ropi.moveLeft()
         time.sleep(0.2)
         print("left")
-    elif a21 < 100:
+    elif a21 < 200:
         ropi.moveRight()
         time.sleep(0.2)
         print("right")
-    elif a20 < 100:
+    elif a20 < 200:
         print("Forwards")
         ropi.moveForwards()
         time.sleep(0.2)

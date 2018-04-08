@@ -98,7 +98,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     #flips the frame if necessary change 0 to 1 or 2..
     frame = cv2.flip(frame,0)
-    
+    cv2.imshow("frame",frame)
     #///////////////////////////
     mask = filterColor(frame)
     #///////////////////////////

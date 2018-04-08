@@ -1,5 +1,4 @@
 import RoPi_SerialCom as ropi
-import time
 #this program shows how to request the data from the rokit board over serial
 #and how to save it and use it
 
