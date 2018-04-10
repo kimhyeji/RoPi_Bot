@@ -31,10 +31,10 @@ cv2.namedWindow('Control Panel')
 
 # Creating track bar
 #cv.CreateTrackbar(trackbarName, windowName, value, count, onChange)  None
-cv2.createTrackbar('hue', 'Control Panel',180,180,nothing)
-cv2.createTrackbar('sat', 'Control Panel',180,255,nothing)
+cv2.createTrackbar('hue', 'Control Panel',77,180,nothing)
+cv2.createTrackbar('sat', 'Control Panel',133,255,nothing)
 cv2.createTrackbar('val', 'Control Panel',140,255,nothing)
-cv2.createTrackbar('hueRange', 'Control Panel',5,127,nothing)
+cv2.createTrackbar('hueRange', 'Control Panel',14,127,nothing)
 cv2.createTrackbar('satRange', 'Control Panel',69,127,nothing)
 cv2.createTrackbar('valRange', 'Control Panel',69,127,nothing)
 
@@ -45,11 +45,11 @@ cv2.createTrackbar('valRange', 'Control Panel',69,127,nothing)
 #this is all to set up the pi camera
 camera = PiCamera()
 #resolution = (640, 480)
-resolution = (320, 240)
-#resolution = (160,128)
+#resolution = (320, 240)
+resolution = (160,128)
 #resolution = (80,64)
 #resolution = (48,32)
-#I use the lowest resolution to speed up the process
+
 
 camera.resolution = resolution
 #set frame rate to 32 frames per second
@@ -72,7 +72,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     h = cv2.getTrackbarPos('hue','Control Panel')
     s = cv2.getTrackbarPos('sat','Control Panel')
     v = cv2.getTrackbarPos('val','Control Panel')
-    hr = cv2.getTrackbarPos('satRange', 'Control Panel')
+    hr = cv2.getTrackbarPos('hueRange', 'Control Panel')
     sr = cv2.getTrackbarPos('satRange', 'Control Panel')
     vr = cv2.getTrackbarPos('valRange', 'Control Panel')
 
@@ -99,7 +99,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     
     #this "res" frame pieces together 2 the mask frame and the original frame
     res = cv2.bitwise_and(frame,frame, mask= mask)
-
+    
     #find contours in the mask
     #cnts is countours
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -110,12 +110,28 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         # it to compute the minimum enclosing circle and
         # centroid
         c = max(cnts, key=cv2.contourArea)
-        ((x, y), radius) = cv2.minEnclosingCircle(c)
-        #cv2.circle(frame, (int(x), int(y)), int(radius),(0, 255, 255), 2)
-        cv2.circle(res, (int(x), int(y)), int(radius),(0, 255, 255), 2)
- 
+        x, y, w, h = cv2.boundingRect(c)
 
-    #the key that is clicked save it as variable key
+        rectangleColor = (255, 0, 0) #(Blue,Green,Red) they go from 0-255
+        #so right now the rectangle is blue
+
+        #this line will actually draw the rectangle onto the "frame" frame
+        cv2.rectangle(frame, (x, y), (x + w, y + h), rectangleColor, 2)
+
+        #find the bounding rectangle with the largest contour = c
+        rect = cv2.minAreaRect(c)
+        center = rect[0]
+        angle = rect[2]
+
+        box = cv2.boxPoints(rect)
+        box = np.int0(box)
+        #draw the bounding box onto "frame"
+        white = (255,255,255)
+        cv2.drawContours(frame, [box], 0, white, 2)
+
+
+
+    #save the "key pressed" as a variable
     key = cv2.waitKey(1) & 0xFF
  
     # clear the stream in preparation for the next frame

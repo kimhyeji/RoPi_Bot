@@ -1,5 +1,7 @@
+#this program will try to follow an orange cone by using simple color detection
+#adjust the trackbars to get a better filtered orange
+
 import os
-#this lets you look for a library that the code cant find by itself
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 
@@ -26,9 +28,9 @@ cv2.namedWindow('Control Panel')
 
 # Creating track bar
 #cv.CreateTrackbar(trackbarName, windowName, value, count, onChange)  None
-cv2.createTrackbar('hue', 'Control Panel',180,180,nothing)
-cv2.createTrackbar('sat', 'Control Panel',180,255,nothing)
-cv2.createTrackbar('val', 'Control Panel',100,255,nothing)
+cv2.createTrackbar('hue', 'Control Panel',3,180,nothing)
+cv2.createTrackbar('sat', 'Control Panel',251,255,nothing)
+cv2.createTrackbar('val', 'Control Panel',159,255,nothing)
 cv2.createTrackbar('hueRange', 'Control Panel',5,127,nothing)
 cv2.createTrackbar('satRange', 'Control Panel',69,127,nothing)
 cv2.createTrackbar('valRange', 'Control Panel',69,127,nothing)
@@ -40,11 +42,11 @@ cv2.createTrackbar('valRange', 'Control Panel',69,127,nothing)
 #this is all to set up the pi camera
 camera = PiCamera()
 #resolution = (640, 480)
-resolution = (320, 240)
-#resolution = (160,128)
+#resolution = (320, 240)
+resolution = (160,128)
 #resolution = (80,64)
 #resolution = (48,32)
-frame_width = 320
+frame_width = 160
 
 #I use the lowest resolution to speed up the process
 
@@ -84,6 +86,10 @@ def filterColor(frame):
     return mask
 
 
+
+
+ropi.speed(30)
+
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 
@@ -98,7 +104,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     #flips the frame if necessary change 0 to 1 or 2..
     frame = cv2.flip(frame,0)
-    cv2.imshow("frame",frame)
+    
     #///////////////////////////
     mask = filterColor(frame)
     #///////////////////////////
@@ -109,7 +115,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #find contours in the mask
     #cnts is countours
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-    
+
+    #-----------------------------------------------------------------------
     #Only proceed if at least one contour was found
     if len(cnts) > 0:
         # find the largest contour in the mask, then use
@@ -118,17 +125,29 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
         cv2.circle(res, (int(x), int(y)), int(radius),(0, 255, 255), 2)
-        if(radius > 15):
-            if(int(x)<(frame_width*0.40)):
+        
+        #if the radius of that object is bigger than 15 pixels
+        if(radius > 5):
+            
+            
+            #if x pixel is below 40% of the frame width ex. x<(320*0.4=128)
+            if(x<(frame_width*(0.5-0.12))):
                 ropi.moveRight()
-                print("right")
-            elif (int(x)>(frame_width*0.60)):
+                #print("Right")
+                
+                
+            elif (x>(frame_width*(0.5+0.12))):
                 ropi.moveLeft()
-                print("left")
+               # print("Left")
+                
+            else:
+                ropi.moveStop()
+               # print("Stop")
         else:
             ropi.moveStop()
-            print("stop")
-                
+            #print("Stop")
+        
+    #-----------------------------------------------------------------------                
 
     #the key that is clicked save it as variable key
     key = cv2.waitKey(1) & 0xFF
@@ -143,12 +162,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         break
 
 
-    #cv2.imshow("frame", frame)
+    cv2.imshow("frame", frame)
     cv2.imshow("res", res)
 
     e2 = cv2.getTickCount()
     time = (e2 - e1)/cv2.getTickFrequency()
     print "milliSeconds" , time*1000
+    
 # clear the stream in preparation for the next frame
 rawCapture.truncate(0)
 cv2.destroyAllWindows()
