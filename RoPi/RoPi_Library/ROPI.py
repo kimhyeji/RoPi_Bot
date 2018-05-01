@@ -176,6 +176,9 @@ class ROPI:
 
 
     def setMotor(self, i, j):
+        """Sets the individual speed of each motor.
+        Args: 2 integers, from -100 to 100, for the left and right motors, respectively.
+        """
         reverse1 = 0
         reverse2 = 0
         if i < -100:
