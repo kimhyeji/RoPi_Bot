@@ -8,6 +8,8 @@ int modifier = 0;
 
 int speedMod = 0;
 int buzzMod = 0;
+int speedM1 = 0;
+int speedM2 = 0;
 
 Servo myservo1;      // create servo object to control a servo1
 Servo myservo2;      // create servo object to control a servo2
@@ -312,6 +314,56 @@ void loop()
 
   break;
    //========================================================
+  case 113: //character "q"
+
+  speedM1 = modifier*10;
+
+  break;
+   //========================================================
+  case 114: //character "r"
+
+  speedM1 += modifier;
+
+  break;
+   //========================================================
+  case 115: //character "s"
+
+  speedM2 = modifier*10;
+
+  break;
+   //========================================================
+  case 116: //character "t"
+
+  speedM2 += modifier;
+
+  break;
+   //========================================================
+  case 117: //character "u"
+
+    switch(modifier)
+    {
+      case 0:
+        SmartInventor.DCMotor(M1, CCW, speedM1);
+        SmartInventor.DCMotor(M2, CW, speedM2);
+      break;
+      case 1:
+        SmartInventor.DCMotor(M1, CW, speedM1);
+        SmartInventor.DCMotor(M2, CW, speedM2);
+      break;
+      case 2:
+        SmartInventor.DCMotor(M1, CCW, speedM1);
+        SmartInventor.DCMotor(M2, CCW, speedM2);
+      break;
+      case 3:
+      default:
+        SmartInventor.DCMotor(M1, CW, speedM1);
+        SmartInventor.DCMotor(M2, CCW, speedM2);
+      break;
+    }
+
+  break;
+   //========================================================
+
   default:
   break;
   
