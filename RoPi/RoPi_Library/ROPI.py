@@ -208,6 +208,3 @@ class ROPI:
 
     def setModifier(self,i):
         self.ser.write(chr(i + 97))
-
-
-ROPI()
