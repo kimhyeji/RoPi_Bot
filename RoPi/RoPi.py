@@ -3,7 +3,7 @@
 
 import serial
 
-class ROPI:
+class RoPi:
     def __init__(self):
         self.ser = serial.Serial('/dev/ttyUSB0', 115200)
 
@@ -209,5 +209,3 @@ class ROPI:
     def setModifier(self,i):
         self.ser.write(chr(i + 97))
 
-
-ROPI()
